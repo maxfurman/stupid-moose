@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		50B42C781A0274B500D6EEF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42C771A0274B500D6EEF2 /* AppDelegate.swift */; };
-		50B42C7A1A0274B500D6EEF2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 50B42C791A0274B500D6EEF2 /* GameScene.sks */; };
 		50B42C7C1A0274B500D6EEF2 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42C7B1A0274B500D6EEF2 /* GameScene.swift */; };
 		50B42C7E1A0274B500D6EEF2 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42C7D1A0274B500D6EEF2 /* GameViewController.swift */; };
 		50B42C811A0274B500D6EEF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50B42C7F1A0274B500D6EEF2 /* Main.storyboard */; };
@@ -17,6 +16,7 @@
 		50B42C921A0274B500D6EEF2 /* Stupid_MooseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42C911A0274B500D6EEF2 /* Stupid_MooseTests.swift */; };
 		50B42C9C1A02761200D6EEF2 /* Moose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42C9B1A02761200D6EEF2 /* Moose.swift */; };
 		50B42C9E1A02779100D6EEF2 /* SKScrollingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42C9D1A02779100D6EEF2 /* SKScrollingNode.swift */; };
+		50B42CA11A02D4D400D6EEF2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B42CA01A02D4D400D6EEF2 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,7 +33,6 @@
 		50B42C721A0274B500D6EEF2 /* Stupid Moose.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stupid Moose.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50B42C761A0274B500D6EEF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B42C771A0274B500D6EEF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		50B42C791A0274B500D6EEF2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		50B42C7B1A0274B500D6EEF2 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		50B42C7D1A0274B500D6EEF2 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		50B42C801A0274B500D6EEF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -44,6 +43,7 @@
 		50B42C911A0274B500D6EEF2 /* Stupid_MooseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stupid_MooseTests.swift; sourceTree = "<group>"; };
 		50B42C9B1A02761200D6EEF2 /* Moose.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Moose.swift; sourceTree = "<group>"; };
 		50B42C9D1A02779100D6EEF2 /* SKScrollingNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKScrollingNode.swift; sourceTree = "<group>"; };
+		50B42CA01A02D4D400D6EEF2 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +67,7 @@
 		50B42C691A0274B500D6EEF2 = {
 			isa = PBXGroup;
 			children = (
+				50B42CA01A02D4D400D6EEF2 /* Constants.swift */,
 				50B42C741A0274B500D6EEF2 /* Stupid Moose */,
 				50B42C8E1A0274B500D6EEF2 /* Stupid MooseTests */,
 				50B42C731A0274B500D6EEF2 /* Products */,
@@ -85,14 +86,11 @@
 		50B42C741A0274B500D6EEF2 /* Stupid Moose */ = {
 			isa = PBXGroup;
 			children = (
+				50B42C9F1A027F3400D6EEF2 /* Resources */,
 				50B42C771A0274B500D6EEF2 /* AppDelegate.swift */,
-				50B42C791A0274B500D6EEF2 /* GameScene.sks */,
 				50B42C7B1A0274B500D6EEF2 /* GameScene.swift */,
 				50B42C9D1A02779100D6EEF2 /* SKScrollingNode.swift */,
 				50B42C7D1A0274B500D6EEF2 /* GameViewController.swift */,
-				50B42C7F1A0274B500D6EEF2 /* Main.storyboard */,
-				50B42C821A0274B500D6EEF2 /* Images.xcassets */,
-				50B42C841A0274B500D6EEF2 /* LaunchScreen.xib */,
 				50B42C751A0274B500D6EEF2 /* Supporting Files */,
 				50B42C9B1A02761200D6EEF2 /* Moose.swift */,
 			);
@@ -122,6 +120,16 @@
 				50B42C901A0274B500D6EEF2 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50B42C9F1A027F3400D6EEF2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				50B42C7F1A0274B500D6EEF2 /* Main.storyboard */,
+				50B42C841A0274B500D6EEF2 /* LaunchScreen.xib */,
+				50B42C821A0274B500D6EEF2 /* Images.xcassets */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,7 +214,6 @@
 			files = (
 				50B42C861A0274B500D6EEF2 /* LaunchScreen.xib in Resources */,
 				50B42C831A0274B500D6EEF2 /* Images.xcassets in Resources */,
-				50B42C7A1A0274B500D6EEF2 /* GameScene.sks in Resources */,
 				50B42C811A0274B500D6EEF2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -230,6 +237,7 @@
 				50B42C7E1A0274B500D6EEF2 /* GameViewController.swift in Sources */,
 				50B42C781A0274B500D6EEF2 /* AppDelegate.swift in Sources */,
 				50B42C9E1A02779100D6EEF2 /* SKScrollingNode.swift in Sources */,
+				50B42CA11A02D4D400D6EEF2 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +363,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Stupid Moose/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -365,6 +374,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Stupid Moose/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

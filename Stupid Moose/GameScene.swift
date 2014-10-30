@@ -13,7 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let BACK_SCROLLING_SPEED: CGFloat = 0.5
     let FLOOR_SCROLLING_SPEED: CGFloat = 3.0
     let VERTICAL_GAP_SIZE: CGFloat = 120
-    let FIRST_OBSTACLE_PADDING: CGFloat = 100
+    let FIRST_OBSTACLE_PADDING: CGFloat = 5
     let OBSTACLE_MIN_HEIGHT: CGFloat = 60
     let OBSTACLE_INTERVAL_SPACE: CGFloat = 130
     
@@ -21,6 +21,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var background : SKScrollingNode?
     var moose : Moose?
     var deadMoose = false
+    
+    var rocks : [SKSpriteNode] = [];
+    var nbObstacles = 0;
 
 
     override func didMoveToView(view: SKView) {
@@ -31,18 +34,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
 //        
 //        self.addChild(myLabel)
+
         self.physicsWorld.contactDelegate = self;
         self.startGame();
     }
     
     func startGame() {
-        self.createMoose()
         self.setBackground()
+        self.createFloor()
+        self.createRocks()
+        self.createMoose()
+        
         
     }
 
     func setBackground() {
-        self.background = SKScrollingNode.scrollingNode("treeLeftRight", containerWidth:self.frame.size.width);
+        self.background = SKScrollingNode.scrollingNode("treeLeftRight", containerSize:self.frame.size);
         self.background!.scrollingSpeed = BACK_SCROLLING_SPEED;
         self.background!.anchorPoint = CGPointZero;
         self.background!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame);
@@ -51,6 +58,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func createMoose() {
+        self.moose = Moose.instance();
+        self.moose!.position = CGPointMake(150,200);
+        self.addChild(moose!);
+    }
+    
+    func createFloor() {
+//        self.floor = SKScrollingNode.scrollingNode("floor", containerSize: self.frame.size) as SKScrollingNode;
+//        self.floor!.scrollingSpeed = FLOOR_SCROLLING_SPEED;
+//        self.floor!.anchorPoint = CGPointZero;
+//        self.floor!.name = "floor";
+//        self.floor!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.floor!.frame);
+    }
+    
+    func createRocks() {
+        self.nbObstacles = Int(ceil(Double(self.frame.size.width)/Double(OBSTACLE_INTERVAL_SPACE)));
+        var lastBlockPos:CGFloat = 0.0;
+        
+        for var i=0; i<self.nbObstacles ; i++ {
+            let thisRock = SKSpriteNode(imageNamed: "rock");
+            thisRock.anchorPoint = CGPointZero;
+            self.addChild(thisRock);
+            self.rocks.append(thisRock);
+            
+            if(i==0) {
+                place(thisRock, xPos: self.frame.size.width + FIRST_OBSTACLE_PADDING);
+            } else {
+                place(thisRock, xPos: lastBlockPos + thisRock.frame.size.width +
+                    OBSTACLE_INTERVAL_SPACE);
+            }
+            lastBlockPos = thisRock.position.x;
+        }
+    }
+    
+    func place(rock: SKSpriteNode, xPos: CGFloat) {
+        
+        rock.position = CGPointMake(xPos, 0.0);
+        rock.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRectMake(0,0, rock.frame.size.width, rock.frame.size.height));
+        
+        rock.physicsBody!.categoryBitMask = Constants.ROCK_BIT_MASK;
+        rock.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
+
         
     }
     
@@ -58,24 +106,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         /* Called when a touch begins */
         
         for touch: AnyObject in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
+//            let location = touch.locationInNode(self)
+//            
+//            let sprite = SKSpriteNode(imageNamed:"Spaceship")
+//            
+//            sprite.xScale = 0.5
+//            sprite.yScale = 0.5
+//            sprite.position = location
+//            
+//            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+//            
+//            sprite.runAction(SKAction.repeatActionForever(action))
+//            
+//            self.addChild(sprite)
+            self.moose!.jump()
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        if (!self.deadMoose) {
+            self.moose!.update(currentTime);
+            self.background!.update(currentTime);
+            self.updateObstacles(currentTime);
+        }
+    }
+    
+    func updateObstacles(currentTime: NSTimeInterval) {
+        if(self.moose!.physicsBody == nil) {
+            return;
+        }
+        
+        for var i=0; i<self.nbObstacles; i++ {
+
+            let thisRock = self.rocks[i];
+            
+            if(thisRock.frame.origin.x < -thisRock.size.width) {
+                let mostRightRock = self.rocks[(i+(self.nbObstacles-1))%self.nbObstacles];
+                place(thisRock, xPos: mostRightRock.frame.origin.x + thisRock.frame.size.width + OBSTACLE_INTERVAL_SPACE);
+            }
+            
+            thisRock.position = CGPointMake(thisRock.frame.origin.x - FLOOR_SCROLLING_SPEED, thisRock.frame.origin.y);
+        }
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
