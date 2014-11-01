@@ -55,34 +55,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func setBackground() {
         self.background = SKScrollingNode.scrollingNode("treeLeftRight", containerSize:self.frame.size);
-        self.background!.scrollingSpeed = BACK_SCROLLING_SPEED;
-        self.background!.anchorPoint = CGPointZero;
-        self.background!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame);
-        
-//        self.background!.physicsBody!.categoryBitMask = Constants.BACK_BIT_MASK;
-//        self.background!.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
+        background!.scrollingSpeed = BACK_SCROLLING_SPEED;
+        background!.anchorPoint = CGPointZero;
+        background!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame);
+        background!.physicsBody!.categoryBitMask = Constants.BACK_BIT_MASK;
+        background!.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
 
-        self.addChild(self.background!);
+            self.addChild(background!);
     }
 
     func createMoose() {
-        if (self.moose == nil) {
-            self.moose = Moose.instance();
-            self.moose!.position = CGPointMake(150,200);
-            self.addChild(self.moose!);
+        if (moose == nil) {
+            moose = Moose.instance();
         } else {
-            self.moose!.zRotation = 0;
-            self.moose!.position = CGPointMake(150,200);
-            self.addChild(self.moose!);
+            moose!.zRotation = 0;
         }
+        moose!.position = CGPointMake(150,200);
+        moose!.name = "moose";
+        self.addChild(moose!);
     }
     
     func createFloor() {
-//        self.floor = SKScrollingNode.scrollingNode("floor", containerSize: self.frame.size) as SKScrollingNode;
-//        self.floor!.scrollingSpeed = FLOOR_SCROLLING_SPEED;
-//        self.floor!.anchorPoint = CGPointZero;
-//        self.floor!.name = "floor";
-//        self.floor!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.floor!.frame);
+        self.floor = SKScrollingNode.scrollingNode("floor", containerSize: self.frame.size) as SKScrollingNode;
+        floor!.scrollingSpeed = FLOOR_SCROLLING_SPEED;
+        floor!.anchorPoint = CGPointZero;
+        floor!.name = "floor";
+        
+        floor!.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRectMake(0,0, floor!.frame.size.width, floor!.frame.size.height));
+        floor!.physicsBody!.mass = 0.1;
+        floor!.physicsBody!.categoryBitMask = Constants.FLOOR_BIT_MASK;
+        floor!.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
+
+        self.addChild(floor!)
+        
     }
     
     func createRocks() {
@@ -113,6 +118,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         rock.physicsBody!.categoryBitMask = Constants.ROCK_BIT_MASK;
         rock.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
+        rock.name = "rock"
 
         
     }
@@ -147,6 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (!self.deadMoose) {
             self.moose!.update(currentTime);
             self.background!.update(currentTime);
+            self.floor!.update(currentTime);
             self.updateObstacles(currentTime);
         }
     }
@@ -170,10 +177,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
-        if (self.deadBounceCounter < MAX_DEAD_BOUNCES) {
-            self.deadBounceCounter++;
-            self.deadMoose = true;
-            self.moose!.die();
+        let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        switch (contactMask) {
+        case Constants.MOOSE_BIT_MASK | Constants.ROCK_BIT_MASK:
+            if (self.deadBounceCounter < MAX_DEAD_BOUNCES) {
+                self.deadBounceCounter++;
+                self.deadMoose = true;
+                self.moose!.die();
+            }
+        default:
+            return
         }
     }
 }
