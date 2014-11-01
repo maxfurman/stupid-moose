@@ -13,9 +13,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let BACK_SCROLLING_SPEED: CGFloat = 0.5
     let FLOOR_SCROLLING_SPEED: CGFloat = 3.0
     let VERTICAL_GAP_SIZE: CGFloat = 120
-    let FIRST_OBSTACLE_PADDING: CGFloat = 5
+    let FIRST_OBSTACLE_PADDING: CGFloat = 0
     let OBSTACLE_MIN_HEIGHT: CGFloat = 60
-    let OBSTACLE_INTERVAL_SPACE: CGFloat = 130
+    let OBSTACLE_INTERVAL_SPACE: CGFloat = 330
+    let MAX_DEAD_BOUNCES: Int = 3;
     
     var floor : SKScrollingNode?
     var background : SKScrollingNode?
@@ -24,6 +25,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var rocks : [SKSpriteNode] = [];
     var nbObstacles = 0;
+    var deadBounceCounter = 0;
 
 
     override func didMoveToView(view: SKView) {
@@ -40,11 +42,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func startGame() {
+        self.deadMoose = false
+        self.deadBounceCounter = 0;
+        self.removeAllChildren()
+        
         self.setBackground()
         self.createFloor()
         self.createRocks()
         self.createMoose()
-        
         
     }
 
@@ -53,14 +58,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.background!.scrollingSpeed = BACK_SCROLLING_SPEED;
         self.background!.anchorPoint = CGPointZero;
         self.background!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame);
+        
+//        self.background!.physicsBody!.categoryBitMask = Constants.BACK_BIT_MASK;
+//        self.background!.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
 
-        self.addChild(background!);
+        self.addChild(self.background!);
     }
 
     func createMoose() {
-        self.moose = Moose.instance();
-        self.moose!.position = CGPointMake(150,200);
-        self.addChild(moose!);
+        if (self.moose == nil) {
+            self.moose = Moose.instance();
+            self.moose!.position = CGPointMake(150,200);
+            self.addChild(self.moose!);
+        } else {
+            self.moose!.zRotation = 0;
+            self.moose!.position = CGPointMake(150,200);
+            self.addChild(self.moose!);
+        }
     }
     
     func createFloor() {
@@ -72,6 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createRocks() {
+        self.rocks = [];
         self.nbObstacles = Int(ceil(Double(self.frame.size.width)/Double(OBSTACLE_INTERVAL_SPACE)));
         var lastBlockPos:CGFloat = 0.0;
         
@@ -119,7 +134,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //            sprite.runAction(SKAction.repeatActionForever(action))
 //            
 //            self.addChild(sprite)
-            self.moose!.jump()
+            if (self.deadMoose == true) {
+                startGame();
+            } else {
+                self.moose!.jump();
+            }
         }
     }
    
@@ -151,6 +170,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
-        
+        if (self.deadBounceCounter < MAX_DEAD_BOUNCES) {
+            self.deadBounceCounter++;
+            self.deadMoose = true;
+            self.moose!.die();
+        }
     }
 }

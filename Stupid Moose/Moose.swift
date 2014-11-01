@@ -36,8 +36,14 @@ class Moose : SKSpriteNode {
     func jump() {
         if(self.physicsBody != nil) {
             self.physicsBody!.velocity = CGVectorMake(0, 0);
-            self.physicsBody!.applyImpulse(CGVectorMake(0, 1200));
-//            self.runAction(self.flap)
+            self.physicsBody!.applyImpulse(CGVectorMake(0, 800));
+        }
+    }
+    
+    func die() {
+        if (self.physicsBody != nil) {
+//            self.physicsBody?.applyImpulse(CGVectorMake(-50, 200));
+            self.physicsBody!.applyAngularImpulse(10);
         }
     }
 }
