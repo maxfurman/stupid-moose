@@ -52,6 +52,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.createMoose()
         
     }
+    
+    func restartGame() {
+        deadMoose = false;
+        deadBounceCounter = 0;
+        removeChildrenInArray(rocks);
+        createRocks();
+        resetMoose();        
+    }
 
     func setBackground() {
         self.background = SKScrollingNode.scrollingNode("treeLeftRight", containerSize:self.frame.size);
@@ -65,14 +73,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func createMoose() {
-        if (moose == nil) {
-            moose = Moose.instance();
-        } else {
-            moose!.zRotation = 0;
-        }
+        moose = Moose.instance();
         moose!.position = CGPointMake(150,200);
         moose!.name = "moose";
         self.addChild(moose!);
+    }
+    
+    func resetMoose() {
+        moose!.zRotation = 0;
+        moose!.position = CGPointMake(150,200);
     }
     
     func createFloor() {
@@ -141,7 +150,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //            
 //            self.addChild(sprite)
             if (self.deadMoose == true) {
-                startGame();
+                restartGame();
             } else {
                 self.moose!.jump();
             }
