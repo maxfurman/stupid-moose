@@ -16,6 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let FIRST_OBSTACLE_PADDING: CGFloat = 0
     let OBSTACLE_MIN_HEIGHT: CGFloat = 60
     let OBSTACLE_INTERVAL_SPACE: CGFloat = 330
+    let OBSTACLE_MIN_SPACE: CGFloat = 50;
     let MAX_DEAD_BOUNCES: Int = 3;
     
     var floor : SKScrollingNode?
@@ -58,11 +59,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         deadBounceCounter = 0;
         removeChildrenInArray(rocks);
         createRocks();
-        resetMoose();        
+        resetMoose();
     }
 
     func setBackground() {
-        self.background = SKScrollingNode.scrollingNode("treeLeftRight", containerSize:self.frame.size);
+        self.background = SKScrollingNode.scrollingNode("treeLeftRight", containerWidth:self.frame.size.width);
         background!.scrollingSpeed = BACK_SCROLLING_SPEED;
         background!.anchorPoint = CGPointZero;
         background!.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame);
@@ -85,7 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createFloor() {
-        self.floor = SKScrollingNode.scrollingNode("floor", containerSize: self.frame.size) as SKScrollingNode;
+        self.floor = SKScrollingNode.scrollingNode("floor", containerWidth: self.frame.size.width) as SKScrollingNode;
         floor!.scrollingSpeed = FLOOR_SCROLLING_SPEED;
         floor!.anchorPoint = CGPointZero;
         floor!.name = "floor";
@@ -113,23 +114,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if(i==0) {
                 place(thisRock, xPos: self.frame.size.width + FIRST_OBSTACLE_PADDING);
             } else {
-                place(thisRock, xPos: lastBlockPos + thisRock.frame.size.width +
-                    OBSTACLE_INTERVAL_SPACE);
+                let xPos = lastBlockPos + thisRock.frame.size.width + CGFloat(arc4random_uniform(UInt32(OBSTACLE_INTERVAL_SPACE))) + OBSTACLE_MIN_SPACE
+                place(thisRock, xPos: xPos);
             }
             lastBlockPos = thisRock.position.x;
         }
     }
     
     func place(rock: SKSpriteNode, xPos: CGFloat) {
-        
-        rock.position = CGPointMake(xPos, 0.0);
+        rock.position = CGPointMake(xPos, floor!.frame.size.height);
         rock.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRectMake(0,0, rock.frame.size.width, rock.frame.size.height));
         
         rock.physicsBody!.categoryBitMask = Constants.ROCK_BIT_MASK;
         rock.physicsBody!.contactTestBitMask = Constants.MOOSE_BIT_MASK;
         rock.name = "rock"
-
-        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
