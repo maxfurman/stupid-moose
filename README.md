@@ -8,3 +8,4 @@ TODO:
 * Balance the physics
 * Multiple levels
 * High scores
+* Better looking pretty much everything
