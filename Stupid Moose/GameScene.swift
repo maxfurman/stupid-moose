@@ -15,7 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let VERTICAL_GAP_SIZE: CGFloat = 120
     let FIRST_OBSTACLE_PADDING: CGFloat = 0
     let OBSTACLE_MIN_HEIGHT: CGFloat = 60
-    let OBSTACLE_INTERVAL_SPACE: CGFloat = 330
+    let OBSTACLE_INTERVAL_SPACE: CGFloat = 550
     let OBSTACLE_MIN_SPACE: CGFloat = 50;
     let MAX_DEAD_BOUNCES: Int = 3;
     
